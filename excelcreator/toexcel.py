@@ -111,7 +111,7 @@ def df_to_dict(in_df: pd.DataFrame) -> NestedDict:
         upd_d = {dim_name: scenario_data}
 
         # create call to dict: ie. dict[group1][group2]...[groupn]
-        gbrackets = [f"[row.{group}]" for group in groupnames]
+        gbrackets = [f"[row[{group!r}]]" for group in groupnames]
         dict_accessor = "big_dict" + functools.reduce(operator.concat, gbrackets[:-1])
         ex_d = eval(dict_accessor)  # old dictionary, if any
         new_d = {**ex_d, **upd_d}  # update and create new dictionary
