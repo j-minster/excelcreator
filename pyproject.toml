@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "excelcreator"
+version = "0.1.0"
+description = ""
+authors = ["j-minster <jack@minster.com.au>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "^8.1.6"
+pandas = "^2.0.3"
+xlsxwriter = "^3.1.2"
+
+[tool.poetry.scripts]
+createxl = "excelcreator.toexcel:run"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
