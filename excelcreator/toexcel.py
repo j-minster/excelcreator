@@ -138,6 +138,10 @@ def shorten_long_sheetnames(in_df: pd.DataFrame) -> pd.DataFrame:
         for frm, to in rlist:
             if len(name) > 31:
                 name = name.replace(frm, to)
+        if len(name) > 31:
+            name = name.replace(" ", "")
+        if len(name) > 31: # fuck sake
+            name = name[0:31]
         return name
 
     sheetname_col = list(in_df.columns)[0]
