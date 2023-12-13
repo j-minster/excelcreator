@@ -312,11 +312,12 @@ def create_data_rows(
     ind_level: int,
     sheetname: str,
     format_dict: dict,
+    row_offset: int,
+    index_row_offset: int,
+    index_sheet: xlsxwriter.worksheet.Worksheet,
     writeIndexHeader: bool,
 ) -> None:
     nums_offset = 6
-    global row_offset
-    global index_row_offset
 
     if writeIndexHeader:
         index_row_offset += 1
@@ -396,6 +397,9 @@ def create_data_rows(
                     next_ind,
                     sheetname,
                     format_dict,
+                    row_offset,
+                    index_row_offset,
+                    index_sheet,
                     False,
                 )
             elif ind_level == 1:
@@ -413,6 +417,9 @@ def create_data_rows(
                     next_ind,
                     sheetname,
                     format_dict,
+                    row_offset,
+                    index_row_offset,
+                    index_sheet,
                     False,
                 )
             else:
@@ -427,6 +434,9 @@ def create_data_rows(
                         next_ind,
                         sheetname,
                         format_dict,
+                        row_offset,
+                        index_row_offset,
+                        index_sheet,
                         False,
                     )
                 else:
@@ -444,6 +454,9 @@ def create_data_rows(
                         next_ind,
                         sheetname,
                         format_dict,
+                        row_offset,
+                        index_row_offset,
+                        index_sheet,
                         False,
                     )
 
@@ -458,9 +471,8 @@ def create_xl_from_df(in_df: pd.DataFrame, excel_out_path) -> None:
     # create a dict of formats used in the workbook
     format_dict = create_format_dict(workbook)
 
-    global index_sheet
     index_sheet = workbook.get_worksheet_by_name("Index")
-    global index_row_offset
+
     index_row_offset = 0
 
     in_df = shorten_long_sheetnames(in_df)
@@ -469,7 +481,6 @@ def create_xl_from_df(in_df: pd.DataFrame, excel_out_path) -> None:
 
     for sheetname in sheetnames:
         logging.info(f"creating {sheetname} sheet")
-        global row_offset
         row_offset = 3
 
         workbook.add_worksheet(sheetname)
@@ -491,6 +502,9 @@ def create_xl_from_df(in_df: pd.DataFrame, excel_out_path) -> None:
             0,
             sheetname,
             format_dict,
+            row_offset,
+            index_row_offset,
+            index_sheet,
             writeIndexHeader=True,
         )
         create_header_block(

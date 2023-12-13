@@ -31,8 +31,10 @@ def vals_are_lists(d: NestedDict) -> bool:
     """
     check whether the values (not the keys) in the dictionary `d` are lists
     """
-    boollist = [isinstance(val, list) for _, val in d.items()]
-    return all(boollist)
+    for key, value in d.items():
+        if not isinstance(value, list):
+            return False
+    return True
 
 
 def compose(*functions):
