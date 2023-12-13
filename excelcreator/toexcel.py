@@ -9,10 +9,7 @@ from xlsxwriter.utility import xl_rowcol_to_cell
 import sys
 import re
 import logging
-from icecream import ic
-from memory_profiler import profile
 
-ic.disable()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -22,20 +19,17 @@ logging.basicConfig(
 
 # helper functions
 def compose(*functions):
-    ic()
     """
     Compose a series of functions together to be called as a single function.
     """
 
     def compose2(f, g):
-        ic()
         return lambda x: f(g(x))
 
     return functools.reduce(compose2, functions, lambda x: x)
 
 
 def is_text(df: pd.DataFrame) -> list[bool]:
-    ic()
     """
     Return a list with a boolean for each column of `df`, depending on whether or not
     the column contains str type data.
@@ -46,7 +40,6 @@ def is_text(df: pd.DataFrame) -> list[bool]:
 
 
 def get_groups(df: pd.DataFrame) -> list[str]:
-    ic()
     """
     Get all column names in `df` which don't contain a year (ie. 2049).
     Should return all columns besides those with names of scenarios.
@@ -59,7 +52,6 @@ def get_groups(df: pd.DataFrame) -> list[str]:
 
 
 def drop_rows_containing(df: pd.DataFrame, string: str) -> pd.DataFrame:
-    ic()
     """
     Drop rows in `df` which contain entries matching `string`.
     """
@@ -69,7 +61,6 @@ def drop_rows_containing(df: pd.DataFrame, string: str) -> pd.DataFrame:
 
 
 def df_from_clargs(input_csv_path: str, output_excel_path: str) -> pd.DataFrame:
-    ic()
     """
     Read command-line args and:
     + set the output excel file path
@@ -83,7 +74,6 @@ def df_from_clargs(input_csv_path: str, output_excel_path: str) -> pd.DataFrame:
 
 
 def get_scenarios(df: pd.DataFrame) -> list[str]:
-    ic()
     # will ignore empty scenarios only containing ' '
     """
     Get non-empty data for scenarios - for use in writing excel rows.
@@ -110,7 +100,6 @@ class NestedDict(dict):
 
 
 def df_to_dict(in_df: pd.DataFrame) -> NestedDict:
-    ic()
     """
     Convert `in_df` to NestedDict structure.
     """
@@ -136,7 +125,6 @@ def df_to_dict(in_df: pd.DataFrame) -> NestedDict:
 
 
 def shorten_long_sheetnames(in_df: pd.DataFrame) -> pd.DataFrame:
-    ic()
     """
     Shorten the names of sheets to meet excel's 31 character limit.
     """
@@ -171,7 +159,6 @@ def shorten_long_sheetnames(in_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_sheetnames(in_df: pd.DataFrame) -> set[str]:
-    ic()
     """
     Get the names of the sheets that will exist in the final excel file.
     """
@@ -183,7 +170,6 @@ def get_sheetnames(in_df: pd.DataFrame) -> set[str]:
 
 
 def create_sheet_df(in_df: pd.DataFrame, sheetname: str) -> pd.DataFrame:
-    ic()
     """
     Extract entries from `in_df` for the relevant `sheetname`
     """
@@ -194,7 +180,6 @@ def create_sheet_df(in_df: pd.DataFrame, sheetname: str) -> pd.DataFrame:
 
 ### create individual dictionaries for sheets rather than one huge dictionary for the whole dataframe
 def create_sheet_dict(in_df: pd.DataFrame, sheetname: str) -> NestedDict:
-    ic()
     sheetnames = get_sheetnames(in_df)
     sub_df = create_sheet_df(in_df, sheetname)
     d1 = df_to_dict(sub_df)
@@ -389,7 +374,6 @@ def create_header_block(
     scenarionames: list[str],
     format_dict: dict,
 ) -> None:
-    ic()
     # constants throughout
     bordercolor = "#9B9B9B"
     orangecolor = "#F7D8AA"
@@ -474,7 +458,6 @@ def create_dynamic_block(
     workbook: xlsxwriter.workbook.Workbook,
     format_dict: dict,
 ) -> None:
-    ic()
     # make column F small and G zero-width
     worksheet.set_column("F:F", 2.33, format_dict["r"])
     # worksheet.set_column('G:G', 0)
@@ -482,7 +465,6 @@ def create_dynamic_block(
 
 # https://stackoverflow.com/questions/23499017/know-the-depth-of-a-dictionary
 def dict_depth(d) -> int:
-    ic()
     if isinstance(d, dict):
         return 1 + (max(map(dict_depth, d.values())) if d else 0)
     return 0
@@ -490,7 +472,6 @@ def dict_depth(d) -> int:
 
 ### check whether the values (not the keys) in the dictionary `d` are lists
 def vals_are_lists(d: NestedDict) -> bool:
-    ic()
     boollist = [isinstance(val, list) for _, val in d.items()]
     return all(boollist)
 
@@ -507,7 +488,6 @@ def create_data_rows(
     format_dict: dict,
     writeIndexHeader: bool,
 ) -> None:
-    ic()
     nums_offset = 6
     global row_offset
     global index_row_offset
@@ -644,7 +624,6 @@ def create_data_rows(
 
 # Creates excel file and writes to disk at the end.
 def create_xl_from_df(in_df: pd.DataFrame) -> None:
-    ic()
     global excel_out_path
     workbook = xlsxwriter.Workbook(excel_out_path)
 
