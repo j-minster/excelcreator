@@ -9,7 +9,7 @@ from xlsxwriter.utility import xl_rowcol_to_cell
 import sys
 import re
 import logging
-
+from memory_profiler import profile
 
 logging.basicConfig(
     level=logging.INFO,
